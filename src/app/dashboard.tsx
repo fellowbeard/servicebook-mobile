@@ -4,6 +4,9 @@ import { Button, Pressable, ScrollView, Text, View } from "react-native";
 import { removeToken } from "../auth/tokenStorage";
 import { useDashboard } from "../hooks/useDashboard";
 
+import { ErrorState } from "../components/ErrorState";
+import { LoadingState } from "../components/LoadingState";
+
 export default function DashboardScreen() {
   const { dashboard, error } = useDashboard();
 
@@ -13,20 +16,11 @@ export default function DashboardScreen() {
   }
 
   if (error) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>{error}</Text>
-        <Button title="Log out" onPress={handleLogout} />
-      </View>
-    );
+    return <ErrorState message={error} />;
   }
 
   if (!dashboard) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>Loading dashboard...</Text>
-      </View>
-    );
+    return <LoadingState message="Loading dashboard..." />;
   }
 
   return (

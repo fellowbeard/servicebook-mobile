@@ -1,25 +1,21 @@
 import { useLocalSearchParams } from "expo-router";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text } from "react-native";
+
 import { useClient } from "../../hooks/useClient";
+
+import { ErrorState } from "../../components/ErrorState";
+import { LoadingState } from "../../components/LoadingState";
 
 export default function ClientDetailScreen() {
   const { id } = useLocalSearchParams();
   const { client, error } = useClient(id);
 
   if (error) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>{error}</Text>
-      </View>
-    );
+    return <ErrorState message={error} />;
   }
 
   if (!client) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>Loading client...</Text>
-      </View>
-    );
+    return <LoadingState message="Loading client..." />;
   }
 
   return (

@@ -1,25 +1,20 @@
 import { router } from "expo-router";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { FlatList, Pressable, Text } from "react-native";
 
 import { useClients } from "../hooks/useClients";
+
+import { ErrorState } from "../components/ErrorState";
+import { LoadingState } from "../components/LoadingState";
 
 export default function ClientsScreen() {
   const { clients, error } = useClients();
 
   if (error) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>{error}</Text>
-      </View>
-    );
+    return <ErrorState message={error} />;
   }
 
   if (clients.length === 0) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>No clients yet.</Text>
-      </View>
-    );
+    return <LoadingState message="No clients yet." />;
   }
 
   return (

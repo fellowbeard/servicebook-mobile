@@ -1,19 +1,11 @@
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
 import { Button, Pressable, ScrollView, Text, View } from "react-native";
 
-import { apiFetch } from "../api/client";
 import { removeToken } from "../auth/tokenStorage";
+import { useDashboard } from "../hooks/useDashboard";
 
 export default function DashboardScreen() {
-  const [dashboard, setDashboard] = useState<any>(null);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    apiFetch("/api/v1/dashboard")
-      .then((data) => setDashboard(data))
-      .catch((error) => setError(error.message));
-  }, []);
+  const { dashboard, error } = useDashboard();
 
   async function handleLogout() {
     await removeToken();
@@ -39,15 +31,17 @@ export default function DashboardScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 24, gap: 16 }}>
-      <Text style={{ fontSize: 28, fontWeight: "bold" }}>{dashboard.account?.business_name}</Text>
+      <Text style={{ fontSize: 28, fontWeight: "bold" }}>
+        {dashboard.account.business_name}
+      </Text>
 
       <Text>
-        Welcome, {dashboard.user?.first_name} {dashboard.user?.last_name}
+        Welcome, {dashboard.user.first_name} {dashboard.user.last_name}
       </Text>
 
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>Recent Clients</Text>
 
-      {dashboard.recent_clients?.map((client: any) => (
+      {dashboard.recent_clients.map((client) => (
         <Pressable
           key={client.id}
           onPress={() => router.push(`/clients/${client.id}`)}
@@ -67,7 +61,7 @@ export default function DashboardScreen() {
 
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>Services</Text>
 
-      {dashboard.services?.map((service: any) => (
+      {dashboard.services.map((service) => (
         <View key={service.id}>
           <Text>
             {service.title} — ${service.price} — {service.duration_minutes} min

@@ -4,6 +4,7 @@ import { FlatList, Pressable, Text } from "react-native";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
 import { useAppointments } from "@/hooks/useAppointments";
+import { EmptyState } from "@/components/EmptyState";
 
 export default function AppointmentsScreen() {
   const { appointments, error, isLoading } = useAppointments();
@@ -17,7 +18,7 @@ export default function AppointmentsScreen() {
   }
 
   if (appointments.length === 0) {
-    return <LoadingState message="No appointments found." />;
+    return <EmptyState message="No appointments found." />;
   }
 
   return (

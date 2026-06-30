@@ -1,25 +1,27 @@
 import { router } from "expo-router";
 import { FlatList, Pressable, Text } from "react-native";
 
+import { ErrorState } from "@/components/ErrorState";
+import { EmptyState } from "@/components/EmptyState";
+import { LoadingState } from "@/components/LoadingState";
 import { useClients } from "@/hooks/useClients";
 
-import { ErrorState } from "@/components/ErrorState";
-import { LoadingState } from "@/components/LoadingState";
-import { ProtectedRoute } from "@/auth/ProtectedRoute";
-
 export default function ClientsScreen() {
-  const { clients, error } = useClients();
+  const { clients, error, isLoading } = useClients();
 
   if (error) {
     return <ErrorState message={error} />;
   }
 
+  if (isLoading) {
+    return <LoadingState message="Loading clients..." />;
+  }
+
   if (clients.length === 0) {
-    return <LoadingState message="No clients yet." />;
+    return <EmptyState message="No clients yet." />;
   }
 
   return (
-    <ProtectedRoute>
     <FlatList
       data={clients}
       keyExtractor={(item) => String(item.id)}
@@ -39,7 +41,6 @@ export default function ClientsScreen() {
           </Text>
         </Pressable>
       )}
-      />
-      </ProtectedRoute>
+    />
   );
 }

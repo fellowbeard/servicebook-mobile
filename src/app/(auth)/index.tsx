@@ -2,9 +2,9 @@ import { useState } from "react";
 import { router } from "expo-router";
 import { Button, Text, TextInput, View } from "react-native";
 
-import { apiFetch } from "../api/client";
-import { useAuth } from "../auth/useAuth";
-import type { LoginResponse } from "../types/auth";
+import { apiFetch } from "@/api/client";
+import { useAuth } from "@/auth/useAuth";
+import type { LoginResponse } from "@/types/auth";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
